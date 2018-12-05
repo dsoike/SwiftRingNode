@@ -1,0 +1,6 @@
+framework module Pods_SwiftRingNode_Tests {
+  umbrella header "Pods-SwiftRingNode_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

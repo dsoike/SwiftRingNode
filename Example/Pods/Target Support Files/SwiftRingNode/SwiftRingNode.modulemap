@@ -1,0 +1,6 @@
+framework module SwiftRingNode {
+  umbrella header "SwiftRingNode-umbrella.h"
+
+  export *
+  module * { export * }
+}

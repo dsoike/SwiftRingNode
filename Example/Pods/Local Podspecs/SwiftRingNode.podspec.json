@@ -1,0 +1,22 @@
+{
+  "name": "SwiftRingNode",
+  "version": "0.1.0",
+  "summary": "A short description of SwiftRingNode.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/Derek Soike/SwiftRingNode",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Derek Soike": "dsoike@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/Derek Soike/SwiftRingNode.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "SwiftRingNode/Classes/**/*"
+}
