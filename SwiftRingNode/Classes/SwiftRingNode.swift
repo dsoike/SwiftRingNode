@@ -8,19 +8,20 @@ protocol SwiftRingNodeDelegate {
 class SwiftRingNode: UIView {
     
     var delegate: SwiftRingNodeDelegate? = nil
-    var firstDraw: Bool = true // first draw is for storyboard display, subsequent draws involve animation
-    var tapGestureSetup: Bool = false
-    var ringShapeLayer: CAShapeLayer? = nil
+    
+    internal var firstDraw: Bool = true // first draw is for storyboard display, subsequent draws involve animation
+    internal var tapGestureSetup: Bool = false
+    internal var ringShapeLayer: CAShapeLayer? = nil
     
     @IBInspectable var title: String = "Title"
     @IBInspectable var titleColor: UIColor = UIColor.white
-    @IBInspectable var titleFontName: String = UIFont.systemFont(ofSize: 0).fontName
-    @IBInspectable var titleFontSize: CGFloat = 10
+    @IBInspectable var titleFontName: String = UIFont.boldSystemFont(ofSize: 0).fontName
+    @IBInspectable var titleFontSize: CGFloat = 20
     @IBInspectable var titleNumberOfLines: Int = 0
-    @IBInspectable var nodeColor: UIColor = UIColor.green
-    @IBInspectable var ringProgress: Double = 75
-    @IBInspectable var ringColor: UIColor = UIColor.blue
-    @IBInspectable var ringThickness: CGFloat = 10
+    @IBInspectable var nodeColor: UIColor = UIColor.init(red: 99/255, green: 116/255, blue: 127/255, alpha: 1)
+    @IBInspectable var ringProgress: Double = 70
+    @IBInspectable var ringColor: UIColor = UIColor.init(red: 122/255, green: 202/255, blue: 255/255, alpha: 1)
+    @IBInspectable var ringThickness: CGFloat = 20
     @IBInspectable var ringAnimationSpeed: CGFloat = 1
     
     // ----------------------------------------------------------------------------------------------------
@@ -40,7 +41,7 @@ class SwiftRingNode: UIView {
     // ----------------------------------------------------------------------------------------------------
     // MARK: Gesture Methods
     
-    func setupTapGestureRecognizer() {
+    internal func setupTapGestureRecognizer() {
         if tapGestureSetup == false {
             let tapFrame = getSquare(centeredInRect: self.bounds, withMargin: 0)
             let tapView = UIView(frame: tapFrame)
@@ -51,7 +52,7 @@ class SwiftRingNode: UIView {
         }
     }
     
-    @objc func didTapRingNode(_ sender: UITapGestureRecognizer) {
+    @objc internal func didTapRingNode(_ sender: UITapGestureRecognizer) {
         if let delegate = delegate {
             delegate.didTapSwiftRingNode(self)
         }
@@ -60,20 +61,20 @@ class SwiftRingNode: UIView {
     // ----------------------------------------------------------------------------------------------------
     // MARK: Draw Node Methods
     
-    func drawNode(inRect rect: CGRect) {
+    internal func drawNode(inRect rect: CGRect) {
         let nodeCenterBounds = getSquare(centeredInRect: rect, withMargin: ringThickness / 2)
         let titleLabelFrame = getSquare(centeredInRect: rect, withMargin: ringThickness * 1.25)
         drawNodeCenter(inSquare: nodeCenterBounds)
         drawNodeTitle(withFrame: titleLabelFrame)
     }
     
-    func drawNodeCenter(inSquare square: CGRect) {
+    internal func drawNodeCenter(inSquare square: CGRect) {
         let path = UIBezierPath(ovalIn: square)
         nodeColor.setFill()
         path.fill()
     }
     
-    func drawNodeTitle(withFrame frame: CGRect) {
+    internal func drawNodeTitle(withFrame frame: CGRect) {
         let label = UILabel(frame: frame)
         label.text = title
         label.textColor = titleColor
@@ -87,12 +88,12 @@ class SwiftRingNode: UIView {
     // ----------------------------------------------------------------------------------------------------
     // MARK: Draw Ring Methods
     
-    func drawRing(inRect rect: CGRect) {
+    internal func drawRing(inRect rect: CGRect) {
         let ringBounds = getSquare(centeredInRect: rect, withMargin: 0)
         drawRing(inSquare: ringBounds)
     }
     
-    func drawRing(inSquare square: CGRect) {
+    internal func drawRing(inSquare square: CGRect) {
         if firstDraw {
             drawRingDummy(inSquare: square)
             firstDraw = false
@@ -101,21 +102,21 @@ class SwiftRingNode: UIView {
         }
     }
     
-    func drawRingDummy(inSquare square: CGRect) { // for storyboard
+    internal func drawRingDummy(inSquare square: CGRect) { // for storyboard
         let path = getRingPath(inSquare: square)
         path.lineWidth = ringThickness
         ringColor.setStroke()
         path.stroke()
     }
     
-    func drawRingActual(inSquare square: CGRect) {
+    internal func drawRingActual(inSquare square: CGRect) {
         let path = getRingPath(inSquare: square)
         let animations = getRingAnimations()
         let layer = getRingLayer(forPath: path.cgPath, withAnimations: animations)
         displayRing(layer)
     }
     
-    func getRingPath(inSquare square: CGRect) -> UIBezierPath {
+    internal func getRingPath(inSquare square: CGRect) -> UIBezierPath {
         let center = getCenter(ofRect: square)
         let radius: CGFloat = max(square.width, square.height)
         let startAngle: CGFloat = .pi / 2
@@ -130,7 +131,7 @@ class SwiftRingNode: UIView {
         return path
     }
     
-    func getRingAnimations() -> CAAnimationGroup {
+    internal func getRingAnimations() -> CAAnimationGroup {
         
         let pathStartPointAnimation = CABasicAnimation(keyPath: "strokeStart")
         pathStartPointAnimation.fromValue = 0
@@ -148,7 +149,7 @@ class SwiftRingNode: UIView {
         return animation
     }
     
-    func getRingLayer(forPath path: CGPath, withAnimations animations: CAAnimationGroup?) -> CAShapeLayer {
+    internal func getRingLayer(forPath path: CGPath, withAnimations animations: CAAnimationGroup?) -> CAShapeLayer {
         let layer = CAShapeLayer()
         layer.path = path
         layer.backgroundColor = UIColor.clear.cgColor
@@ -161,7 +162,7 @@ class SwiftRingNode: UIView {
         return layer
     }
     
-    func displayRing(_ layer: CAShapeLayer) {
+    internal func displayRing(_ layer: CAShapeLayer) {
         if let existingLayer = ringShapeLayer {
             existingLayer.removeFromSuperlayer()
         }
@@ -172,7 +173,7 @@ class SwiftRingNode: UIView {
     // ----------------------------------------------------------------------------------------------------
     // MARK: Helper Methods
     
-    func getSquare(centeredInRect rect: CGRect, withMargin margin: CGFloat) -> CGRect {
+    internal func getSquare(centeredInRect rect: CGRect, withMargin margin: CGFloat) -> CGRect {
         let minDim: CGFloat = min(rect.width, rect.height)
         let side: CGFloat = minDim - margin * 2
         let center: CGPoint = getCenter(ofRect: rect)
@@ -183,7 +184,7 @@ class SwiftRingNode: UIView {
         return CGRect(origin: origin, size: size)
     }
     
-    func getCenter(ofRect rect: CGRect) -> CGPoint {
+    internal func getCenter(ofRect rect: CGRect) -> CGPoint {
         let centerX: CGFloat = (rect.maxX - rect.minX) / 2 + rect.minX
         let centerY: CGFloat = (rect.maxY - rect.minY) / 2 + rect.minY
         return CGPoint(x: centerX, y: centerY)
