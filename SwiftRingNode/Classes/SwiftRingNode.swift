@@ -21,7 +21,7 @@ class SwiftRingNode: UIView {
     @IBInspectable var nodeColor: UIColor = UIColor.init(red: 99/255, green: 116/255, blue: 127/255, alpha: 1)
     @IBInspectable var ringProgress: Double = 70
     @IBInspectable var ringColor: UIColor = UIColor.init(red: 122/255, green: 202/255, blue: 255/255, alpha: 1)
-    @IBInspectable var ringThickness: CGFloat = 20
+    @IBInspectable var ringThickness: CGFloat = 40
     @IBInspectable var ringAnimationSpeed: CGFloat = 1
     
     // ----------------------------------------------------------------------------------------------------
