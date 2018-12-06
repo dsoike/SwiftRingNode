@@ -9,6 +9,8 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
+![SwiftRingNode Example GIF](https://github.com/dsoike/SwiftRingNode/wiki/assets/swift_ring_node.gif)
+
 ## Requirements
 
 ## Installation
