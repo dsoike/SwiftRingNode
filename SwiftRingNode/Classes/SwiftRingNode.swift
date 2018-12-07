@@ -1,48 +1,67 @@
+//
+//  SwiftRingNode.swift
+//  SwiftRingNode
+//
+//  Created by Derek Soike on 12/05/2018.
+//  Copyright (c) 2018 Derek Soike. All rights reserved.
+//
+
 import UIKit
 
-protocol SwiftRingNodeDelegate {
+public protocol SwiftRingNodeDelegate {
     func didTapSwiftRingNode(_ swiftRingNode: SwiftRingNode)
 }
 
 @IBDesignable
-class SwiftRingNode: UIView {
+public class SwiftRingNode: UIView {
     
-    var delegate: SwiftRingNodeDelegate? = nil
+    public var delegate: SwiftRingNodeDelegate? = nil
+    public var label: String? = nil
     
     internal var firstDraw: Bool = true // first draw is for storyboard display, subsequent draws involve animation
     internal var tapGestureSetup: Bool = false
     internal var ringShapeLayer: CAShapeLayer? = nil
     
-    @IBInspectable var title: String = "Title"
-    @IBInspectable var titleColor: UIColor = UIColor.white
-    @IBInspectable var titleFontName: String = UIFont.boldSystemFont(ofSize: 0).fontName
-    @IBInspectable var titleFontSize: CGFloat = 20
-    @IBInspectable var titleNumberOfLines: Int = 0
-    @IBInspectable var nodeColor: UIColor = UIColor.init(red: 99/255, green: 116/255, blue: 127/255, alpha: 1)
-    @IBInspectable var ringProgress: Double = 70
-    @IBInspectable var ringColor: UIColor = UIColor.init(red: 122/255, green: 202/255, blue: 255/255, alpha: 1)
-    @IBInspectable var ringThickness: CGFloat = 40
-    @IBInspectable var ringAnimationSpeed: CGFloat = 1
+    @IBInspectable public var title: String = "Title"
+    @IBInspectable public var titleColor: UIColor = UIColor.white
+    @IBInspectable public var titleFontName: String = UIFont.boldSystemFont(ofSize: 0).fontName
+    @IBInspectable public var titleFontSize: CGFloat = 20
+    @IBInspectable public var titleNumberOfLines: Int = 0
+    @IBInspectable public var nodeColor: UIColor = UIColor.init(red: 99/255, green: 116/255, blue: 127/255, alpha: 1)
+    @IBInspectable public var ringProgress: Double = 70
+    @IBInspectable public var ringColor: UIColor = UIColor.init(red: 122/255, green: 202/255, blue: 255/255, alpha: 1)
+    @IBInspectable public var ringThickness: CGFloat = 40
+    @IBInspectable public var ringAnimationSpeed: CGFloat = 1
     
     // ----------------------------------------------------------------------------------------------------
     // MARK: View Methods
     
-    override func willMove(toSuperview newSuperview: UIView?) {
+    override public func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
+        print("willMove")
         
         setupTapGestureRecognizer()
     }
     
-    override func draw(_ rect: CGRect) {
+    override public func draw(_ rect: CGRect) {
+        print("draw")
+        self.subviews.forEach({$0.removeFromSuperview()})
         self.drawNode(inRect: rect)
         self.drawRing(inRect: rect)
+        setupTapGestureRecognizer()
+    }
+    
+    public func printSomething() {
+//        print("Something")
     }
     
     // ----------------------------------------------------------------------------------------------------
     // MARK: Gesture Methods
     
     internal func setupTapGestureRecognizer() {
+        print("setupTapGestureRecognizer")
         if tapGestureSetup == false {
+            print("setting up!!")
             let tapFrame = getSquare(centeredInRect: self.bounds, withMargin: 0)
             let tapView = UIView(frame: tapFrame)
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.didTapRingNode(_:)))
@@ -53,6 +72,7 @@ class SwiftRingNode: UIView {
     }
     
     @objc internal func didTapRingNode(_ sender: UITapGestureRecognizer) {
+        print("TAP - SwiftRingNode")
         if let delegate = delegate {
             delegate.didTapSwiftRingNode(self)
         }
@@ -75,6 +95,9 @@ class SwiftRingNode: UIView {
     }
     
     internal func drawNodeTitle(withFrame frame: CGRect) {
+//        if let titleLabel = titleLabel {
+//            titleLabel.removeFromSuperview()
+//        }
         let label = UILabel(frame: frame)
         label.text = title
         label.textColor = titleColor
@@ -83,6 +106,7 @@ class SwiftRingNode: UIView {
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
         self.addSubview(label)
+//        self.titleLabel = label
     }
     
     // ----------------------------------------------------------------------------------------------------
