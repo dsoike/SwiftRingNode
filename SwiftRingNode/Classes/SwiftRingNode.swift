@@ -19,7 +19,6 @@ public class SwiftRingNode: UIView {
     public var label: String? = nil
     
     internal var firstDraw: Bool = true // first draw is for storyboard display, subsequent draws involve animation
-    internal var tapGestureSetup: Bool = false
     internal var ringShapeLayer: CAShapeLayer? = nil
     
     @IBInspectable public var title: String = "Title"
@@ -38,43 +37,19 @@ public class SwiftRingNode: UIView {
     
     override public func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
-        print("willMove")
-        
-        setupTapGestureRecognizer()
     }
     
     override public func draw(_ rect: CGRect) {
-        print("draw")
-        self.subviews.forEach({$0.removeFromSuperview()})
-        self.drawNode(inRect: rect)
-        self.drawRing(inRect: rect)
+        removeSubviewsAndSublayers()
+        drawNode(inRect: rect)
+        drawRing(inRect: rect)
         setupTapGestureRecognizer()
     }
     
-    public func printSomething() {
-//        print("Something")
-    }
-    
-    // ----------------------------------------------------------------------------------------------------
-    // MARK: Gesture Methods
-    
-    internal func setupTapGestureRecognizer() {
-        print("setupTapGestureRecognizer")
-        if tapGestureSetup == false {
-            print("setting up!!")
-            let tapFrame = getSquare(centeredInRect: self.bounds, withMargin: 0)
-            let tapView = UIView(frame: tapFrame)
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.didTapRingNode(_:)))
-            tapView.addGestureRecognizer(tapGesture)
-            self.addSubview(tapView)
-            self.tapGestureSetup = true
-        }
-    }
-    
-    @objc internal func didTapRingNode(_ sender: UITapGestureRecognizer) {
-        print("TAP - SwiftRingNode")
-        if let delegate = delegate {
-            delegate.didTapSwiftRingNode(self)
+    func removeSubviewsAndSublayers() {
+        self.subviews.forEach({$0.removeFromSuperview()})
+        if let sublayers = self.layer.sublayers {
+            sublayers.forEach({ $0.removeFromSuperlayer() })
         }
     }
     
@@ -95,9 +70,6 @@ public class SwiftRingNode: UIView {
     }
     
     internal func drawNodeTitle(withFrame frame: CGRect) {
-//        if let titleLabel = titleLabel {
-//            titleLabel.removeFromSuperview()
-//        }
         let label = UILabel(frame: frame)
         label.text = title
         label.textColor = titleColor
@@ -106,7 +78,6 @@ public class SwiftRingNode: UIView {
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
         self.addSubview(label)
-//        self.titleLabel = label
     }
     
     // ----------------------------------------------------------------------------------------------------
@@ -192,6 +163,24 @@ public class SwiftRingNode: UIView {
         }
         self.ringShapeLayer = layer
         self.layer.addSublayer(layer)
+    }
+    
+    // ----------------------------------------------------------------------------------------------------
+    // MARK: Gesture Methods
+    
+    internal func setupTapGestureRecognizer() {
+        let tapFrame = getSquare(centeredInRect: self.bounds, withMargin: 0)
+        let tapView = UIView(frame: tapFrame)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.didTapRingNode(_:)))
+        tapView.addGestureRecognizer(tapGesture)
+        tapView.layer.zPosition = 1000
+        self.addSubview(tapView)
+    }
+    
+    @objc internal func didTapRingNode(_ sender: UITapGestureRecognizer) {
+        if let delegate = delegate {
+            delegate.didTapSwiftRingNode(self)
+        }
     }
     
     // ----------------------------------------------------------------------------------------------------
