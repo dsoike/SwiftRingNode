@@ -10,6 +10,7 @@ import UIKit
 
 public protocol SwiftRingNodeDelegate {
     func didTapSwiftRingNode(_ swiftRingNode: SwiftRingNode)
+    func didLongPressSwiftRingNode(_ swiftRingNode: SwiftRingNode)
 }
 
 @IBDesignable
@@ -43,7 +44,7 @@ public class SwiftRingNode: UIView {
         removeSubviewsAndSublayers()
         drawNode(inRect: rect)
         drawRing(inRect: rect)
-        setupTapGestureRecognizer()
+        setupGestureRecognizers()
     }
     
     func removeSubviewsAndSublayers() {
@@ -168,18 +169,26 @@ public class SwiftRingNode: UIView {
     // ----------------------------------------------------------------------------------------------------
     // MARK: Gesture Methods
     
-    internal func setupTapGestureRecognizer() {
-        let tapFrame = getSquare(centeredInRect: self.bounds, withMargin: 0)
-        let tapView = UIView(frame: tapFrame)
+    internal func setupGestureRecognizers() {
+        let touchFrame = getSquare(centeredInRect: self.bounds, withMargin: 0)
+        let touchView = UIView(frame: touchFrame)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.didTapRingNode(_:)))
-        tapView.addGestureRecognizer(tapGesture)
-        tapView.layer.zPosition = 1000
-        self.addSubview(tapView)
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.didLongPressRingNode(_:)))
+        touchView.addGestureRecognizer(tapGesture)
+        touchView.addGestureRecognizer(longPressGesture)
+        touchView.layer.zPosition = 1000
+        self.addSubview(touchView)
     }
     
     @objc internal func didTapRingNode(_ sender: UITapGestureRecognizer) {
         if let delegate = delegate {
             delegate.didTapSwiftRingNode(self)
+        }
+    }
+    
+    @objc internal func didLongPressRingNode(_ sender: UILongPressGestureRecognizer) {
+        if let delegate = delegate {
+            delegate.didLongPressSwiftRingNode(self)
         }
     }
     
