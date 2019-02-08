@@ -49,7 +49,7 @@
 		BC0E3F2EAABD9B2F6809FA13 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		C39111C69813A23C58D05459 /* Pods-SwiftRingNode_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftRingNode_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftRingNode_Tests/Pods-SwiftRingNode_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		CE9BDCBDABA3F14BB3374011 /* Pods-SwiftRingNode_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftRingNode_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftRingNode_Tests/Pods-SwiftRingNode_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		E14339D99A7D09504B32BD71 /* SwiftRingNode.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SwiftRingNode.podspec; path = ../SwiftRingNode.podspec; sourceTree = "<group>"; };
+		E14339D99A7D09504B32BD71 /* SwiftRingNode.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SwiftRingNode.podspec; path = ../SwiftRingNode.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		ECF8C620A953A1C66F427D92 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
