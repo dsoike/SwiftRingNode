@@ -13,6 +13,11 @@ public protocol SwiftRingNodeDelegate {
     func didLongPressSwiftRingNode(_ swiftRingNode: SwiftRingNode)
 }
 
+public extension SwiftRingNodeDelegate {
+    func didTapSwiftRingNode(_ swiftRingNode: SwiftRingNode) {}
+    func didLongPressSwiftRingNode(_ swiftRingNode: SwiftRingNode) {}
+}
+
 @IBDesignable
 public class SwiftRingNode: UIView {
     
